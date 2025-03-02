@@ -1,0 +1,508 @@
+/* Appearance.module.css */
+.appearanceContainer {
+  display: flex;
+  max-width: 600px;
+  margin: 0 auto;
+  margin-left: 23em;
+  gap: 2rem;
+}
+
+.rightPanel {
+  flex: 1;
+  width: 100%;
+}
+
+.rightPanel h1 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.rightPanel h2 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 1rem 0 0.5rem;
+  color: #333;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.layoutOptions {
+  display: flex;
+  gap: 1rem;
+}
+
+.layoutOption {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 0.5rem;
+  background: white;
+  cursor: pointer;
+}
+
+.layoutOption.active {
+  border-color: #10b981;
+  background: #e5f7ed;
+}
+
+.layoutIcon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stackIcon,
+.gridIcon,
+.carouselIcon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stackIcon span {
+  width: 100%;
+  height: 8px;
+  background: #666;
+  border-radius: 2px;
+}
+
+.gridIcon {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.gridIcon span {
+  background: #666;
+  border-radius: 2px;
+  aspect-ratio: 1;
+}
+
+.carouselIcon {
+  flex-direction: row;
+}
+
+.carouselIcon span {
+  flex: 1;
+  background: #666;
+  border-radius: 2px;
+}
+
+.buttonStyleRow {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.buttonOptions {
+  margin-bottom: 1.5rem;
+}
+
+.buttonPreview {
+  flex: 1;
+  padding: 0.5rem;
+  background: #f5f5f5;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.buttonPreview:hover {
+  background: #ececec;
+}
+
+.activeButtonType {
+  background: #e5f7ed;
+  border: 1px solid #10b981;
+}
+
+.buttonPreview button {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.fillButton {
+  background: #000;
+  color: white;
+  border: none;
+}
+
+.outlineButton {
+  background: transparent;
+  border: 2px solid #000;
+}
+
+.hardShadowButton {
+  background: white;
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0 #000;
+}
+
+.softShadowButton {
+  background: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.specialOptions {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.specialPreview {
+  padding: 0.5rem;
+  background: #f5f5f5;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.specialPreview:hover {
+  background: #ececec;
+}
+
+.activeSpecial {
+  background: #e5f7ed;
+  border: 1px solid #10b981;
+}
+
+.specialButton {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.none {
+  background: #000;
+  color: white;
+  border: none;
+}
+
+.wavy {
+  background: transparent;
+  border: 2px solid #000;
+  border-radius: 24px;
+}
+
+.dotted {
+  background: transparent;
+  border: 2px dotted #000;
+}
+
+.dashed {
+  background: transparent;
+  border: 2px dashed #000;
+}
+
+.colorPicker {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.2rem;
+}
+
+.colorOption {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.colorPicker h3 {
+  margin-top: 1rem;
+  color: #212529;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.colorinput[type="color"] {
+  width: 3.5em;
+  height: 3.5em;
+  border: 0px solid rgb(174, 172, 172);
+  border-radius: 0.5rem;
+  padding: 0;
+  cursor: pointer;
+  outline: #f7f0f0;
+  appearance: none; /* For modern browsers */
+  -webkit-appearance: none; /* For WebKit browsers */
+}
+
+.colorcode {
+  width: 8em;
+  border-radius: 10px;
+  padding: 1em 1em 1em 1em;
+  border: none;
+  outline: none;
+  background-color: #f6f7f5;
+}
+
+.colorOption span {
+  display: block;
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+.fontSelector,
+.fontColor {
+  margin-bottom: 1rem;
+}
+
+.fontSelector h3,
+.fontColor h3 {
+  margin-bottom: 0.5rem;
+  color: #212529;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.fontdiv {
+  display: flex;
+  border: 1px solid #eee;
+  padding: 0.45rem;
+  gap: 1em;
+  border-radius: 0.5rem;
+}
+
+.fontdiv p {
+  padding: 0.8em 0.9em;
+  font-family: "Poppins";
+  border-radius: 0.5rem;
+  background-color: #f3f3f1;
+}
+
+.fontSelector select {
+  width: 100%;
+  border: none;
+  background: white;
+  font-size: 14px;
+  appearance: none;
+}
+
+.colorContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.colorInput {
+  width: 45px;
+  height: 45px;
+  outline: none;
+  border: none;
+  border-radius: 6px;
+  padding: 0;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  overflow: hidden;
+}
+
+.colorInput::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.colorInput::-webkit-color-swatch {
+  border: none;
+}
+
+.colorCode {
+  width: 8em;
+  border-radius: 10px;
+  padding: 1em 1em 1em 1em;
+  border: 2px solid #8f8c8c;
+  border-radius: 0.5rem;
+  background: #f9f9f9;
+  font-size: 14px;
+}
+
+.themeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.themeOption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #eee;
+  border-radius: 0.5rem;
+  background: white;
+  cursor: pointer;
+}
+
+.themeOption.active {
+  border-color: #10b981;
+  background: #e5f7ed;
+}
+
+.themePreview {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--theme-color);
+  border-radius: 0.25rem;
+  padding: 4rem 0.5em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.themePreview span {
+  height: 8px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+
+.saveButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.saveButton {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* ---------------------------------------------- */
+
+/* ____________- */
+
+.specialButton {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  font-size: 14px;
+  font-weight: 500;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+.specialPreview {
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 5px;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.specialOptions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 0px;
+  grid-auto-rows: minmax(60px, auto);
+}
+
+/* Add specific styles for image-based buttons */
+.wavy,
+.dotted,
+.dashed,
+.gradient,
+.glow {
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  color: #ffffff;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 42px;
+}
+
+/* Add this to ensure the text is visible on button backgrounds */
+.specialButton span {
+  position: relative;
+  z-index: 2;
+  color: inherit;
+}
+
+@media (max-width: 768px) {
+  .appearanceContainer {
+    max-width: 100%;
+    margin: 0;
+    padding: 0 1rem;
+  }
+
+  .buttonStyleRow {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .colorPicker {
+    grid-template-columns: 1fr;
+  }
+
+  .specialOptions {
+    grid-template-columns: 1fr;
+  }
+
+  .themeGrid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+  .specialOptions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .appearanceContainer {
+    max-width: 100%;
+    margin: 0;
+    padding: 0 0rem;
+  }
+  .specialOptions {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,332 @@
+* {
+  padding: 0%;
+  margin: 0%;
+}
+
+.main {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 65% 35%;
+}
+
+.Leftsection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  position: absolute;
+  left: 2%;
+  top: 4%;
+}
+
+.mainheading {
+  font-family: Poppins;
+  font-size: 2.3em;
+  font-weight: 800;
+  margin-top: 8%;
+}
+
+.Leftmain {
+  width: 80%;
+  height: 80%;
+  padding-left: 5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2%;
+}
+
+.Leftheading {
+  display: flex;
+  padding-right: 6.5em;
+  align-items: center;
+  gap: 9.5em;
+  font-size: 0.84em;
+  color: #333333;
+  margin-bottom: 0.5em;
+}
+
+.Leftheading a {
+  color: #28a263;
+  text-decoration: underline;
+}
+
+.L1 {
+  font-family: Poppins;
+  font-size: 1.3em;
+  font-weight: 500;
+  line-height: 30.24px;
+  text-align: left;
+  color: #333333;
+}
+
+.InputCheckbox {
+  height: 2.5em;
+}
+
+.errMsg {
+  margin-left: 0em;
+  color: rgb(199, 67, 67);
+  font-family: Poppins;
+  font-size: 12px;
+  position: absolute;
+  margin-left: 34em;
+  margin-top: 2.5em;
+  font-weight: 400;
+}
+
+.InputFields {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  color: #666666;
+  font-size: small;
+}
+
+.Emailinput,
+.Passwordinput,
+.Nameinput {
+  display: block;
+  width: 23.4em;
+  margin-bottom: 0.5em;
+  border: 1.4px solid #b4b4b4;
+  border-radius: 8px;
+  padding: 0.4em;
+  padding-left: 1.5em;
+  color: #5c5a5a;
+  font-family: Poppins;
+  font-size: 17px;
+  font-weight: 400;
+  display: inline-block;
+}
+
+.checkboxContainer {
+  display: flex;
+  gap: 1em;
+  color: #3d3d3d;
+  width: 75%;
+}
+
+.link {
+  color: #181818;
+}
+
+.SigninBtn {
+  width: 81%;
+  font-family: Poppins;
+  height: 2.7em;
+  margin-top: 1.3em;
+  background-color: #b1b1af;
+  color: white;
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: 400;
+  border: none;
+  border-radius: 25px;
+}
+
+.SigninBtn:hover {
+  border: 2px solid #b1b1af;
+  background-color: white;
+  color: #b1b1af;
+}
+
+.belowLine {
+  padding-bottom: 1em;
+  font-size: 0.7em;
+  color: #676b5f;
+}
+
+.belowLine span {
+  text-decoration: underline;
+}
+
+.L2 {
+  color: rgba(82, 82, 82, 1);
+  font-family: Poppins;
+  margin-top: 1em;
+  font-size: 15px;
+  margin-left: 8em;
+  font-weight: 500;
+  line-height: 30.24px;
+}
+
+.Signup {
+  color: #1b48da;
+  cursor: pointer;
+}
+
+.Rightsection {
+  overflow-y: hidden;
+}
+
+.Img1 {
+  width: 100%;
+  height: 100%;
+}
+
+.Rightheading {
+  position: absolute;
+  font-family: Poppins;
+  font-size: 28px;
+  margin-left: 3%;
+  margin-top: 0.8em;
+  font-weight: 500;
+  line-height: 57.61px;
+  color: rgb(255, 255, 255);
+}
+
+@media (max-width: 768px) {
+  .main {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .Leftmain {
+    width: 90%;
+    margin: 10% auto;
+    margin-top: 30%;
+    height: auto;
+  }
+
+  .serMessage {
+    margin-left: 10%;
+    font-size: 0.9em;
+  }
+
+  .L1 {
+    font-size: 1em;
+    line-height: 25px;
+  }
+
+  .Emailinput,
+  .Passwordinput,
+  .Nameinput,
+  .Mobileinput {
+    width: 90%;
+    padding: 0.9em;
+    padding-left: 1em;
+    font-size: 15px;
+  }
+
+  .SigninBtn {
+    width: 98%;
+    font-size: 14px;
+  }
+
+  .L2 {
+    margin-left: 0;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .Signup {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .Rightsection {
+    display: none;
+  }
+
+  .navBtn {
+    top: 2em;
+    margin-left: 14em;
+  }
+}
+
+@media (max-width: 576px) {
+  .mainheading {
+    font-size: 2em;
+    margin-top: 3em;
+  }
+
+  .logo {
+    display: block;
+  }
+
+  .SigninBtn {
+    font-size: 14px;
+  }
+
+  .Leftmain {
+    padding-left: 0em;
+  }
+
+  .Leftheading {
+    display: flex;
+    padding-right: 0em;
+    gap: 3em;
+    font-size: 0.84em;
+    color: #333333;
+    margin-bottom: 0.9em;
+  }
+
+  .L1 {
+    font-size: 1.6em;
+  }
+
+  .Leftmain {
+    width: 80%;
+    height: 80%;
+    flex-direction: column;
+    align-items: end;
+    margin-top: 8%;
+  }
+
+  .checkboxContainer {
+    display: flex;
+    gap: 1em;
+    margin-top: 0.1em;
+    color: #3d3d3d;
+    width: 100%;
+  }
+
+  .Emailinput,
+  .Passwordinput,
+  .Nameinput {
+    width: 20em;
+    margin-bottom: 1.4em;
+    border: 1.4px solid #b4b4b4;
+    border-radius: 8px;
+    padding: 0.4em;
+    padding-left: 1.5em;
+    color: #5c5a5a;
+    font-family: Poppins;
+    font-size: 17px;
+    font-weight: 400;
+    display: inline-block;
+  }
+
+  .errMsg {
+    margin-left: 0em;
+    color: rgb(199, 67, 67);
+    font-family: Poppins;
+    font-size: 12px;
+    position: absolute;
+    margin-left: 1%;
+    margin-top: 5em;
+    font-weight: 400;
+  }
+
+  .belowLine {
+    padding-bottom: 1em;
+    padding-left: 0em;
+    width: 80%;
+    text-align: center;
+  }
+
+  .L2 {
+    font-size: 14px;
+  }
+
+  .Signup {
+    font-size: 20px;
+  }
+}

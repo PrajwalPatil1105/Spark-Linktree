@@ -1,0 +1,579 @@
+.dashboardContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f3f3f1;
+  font-family: "Poppins", sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 14% 1rem 3rem;
+  width: 93%;
+  margin-left: 13.7em;
+  background-color: #f3f3f1;
+  position: fixed;
+  z-index: 1000;
+}
+
+.header img {
+  display: none;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.logo h1 {
+  font-size: 1.2em;
+  text-align: left;
+}
+
+.logo p {
+  font-size: 0.8em;
+}
+
+.logo img {
+  height: 35px;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.headerRight img {
+  display: none;
+}
+
+.headerRight span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.shareButton {
+  padding: 0.6rem 0.7rem;
+  border: none;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+}
+
+.mainContent {
+  display: flex;
+  flex: 1;
+}
+
+.previewLinksContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.previewLinks {
+  margin-top: 15.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 42%;
+  padding: 10px 15px;
+  gap: 8px;
+  overflow-y: scroll;
+  max-height: calc(100% - 120px);
+}
+
+.previewLink {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 6px 6px;
+  border-radius: 45px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.linkIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  width: 35px;
+  border-radius: 20px;
+  height: 35px;
+  background-color: #ffff;
+}
+
+.linkIcon img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  border-radius: 0%;
+}
+
+.defaultIcon {
+  width: 24px;
+  height: 24px;
+  background-color: #4caf50;
+  border-radius: 50%;
+}
+
+.linkTitle {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.linkHeader {
+  display: flex;
+  gap: 4px;
+  width: 37.5%;
+  margin-top: 13.3em;
+  margin-left: 19%;
+  background: #c9c9c9;
+  padding: 3px 3px;
+  position: absolute;
+  border-radius: 20px;
+}
+
+.addLinkBtn,
+.addShopBtn {
+  font-size: 0.6em;
+  padding: 4px 20px;
+  border-radius: 16px;
+  border: none;
+  display: flex;
+  gap: 5px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.addLinkBtn {
+  background: #28a263;
+  color: white;
+}
+
+.bottomContent {
+  bottom: 0;
+  width: 80%;
+  position: absolute;
+  background-color: transparent;
+  padding-bottom: 0px;
+  margin-bottom: 45px;
+}
+
+.connectButton {
+  width: 100%;
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.connectButton button {
+  background-color: #35ca7d;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 6px 10px;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 50%;
+  text-align: center;
+}
+
+.sparkLogo {
+  margin: 2px 0;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.sparkLogo img {
+  height: 20px;
+  object-fit: contain;
+}
+
+.desktopNav {
+  width: 220px;
+  height: 100vh;
+  padding: 2rem 1rem;
+  background-color: #ffffff;
+  border-right: 1px solid #eee;
+  display: flex;
+  top: 0px;
+  align-items: center;
+  padding-top: 2em;
+  position: absolute;
+  flex-direction: column;
+  gap: 1rem;
+  position: fixed;
+}
+
+.contentArea {
+  flex: 1;
+  display: flex;
+  padding: 0rem 10% 0% 20%;
+  gap: 0rem;
+  margin-top: 5%;
+}
+
+.phonePreview {
+  width: 355px;
+  padding: 2rem;
+  position: fixed;
+}
+
+.phoneFrame {
+  border: 12px solid #000;
+  border-radius: 40px;
+  height: 580px;
+  overflow: hidden;
+  background: white;
+}
+
+.share {
+  position: absolute;
+  left: 1.5em;
+  top: 1.5em;
+  border-radius: 10em;
+  padding: 0.4em 0.6em;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition-duration: 0.2s;
+}
+
+.share:hover {
+  background-color: #d4d2d2;
+}
+
+.previewContent {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.userProfile {
+  position: fixed;
+  padding: 2rem 2.82rem;
+  text-align: center;
+  color: white;
+  border-radius: 25px 25px 25px 25px;
+}
+
+.userProfile h2 {
+  width: 8.5em;
+  overflow-y: scroll;
+  text-align: center;
+  font-size: 1.3em;
+  padding-left: 1em;
+  font-family: poppins;
+}
+
+.profileImage {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+.profileImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mainSection {
+  flex: 1;
+  padding: 1rem;
+}
+
+.mobileNav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  border-bottom: 1px solid rgb(193, 193, 193);
+  border-top: 1px solid rgb(193, 193, 193);
+  background-color: #ffffff;
+  justify-content: space-around;
+}
+
+.navButton {
+  padding: 1.2rem 6.3rem 1.2rem 4.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+  color: #666;
+}
+
+.navButton1 {
+  margin-top: 3em;
+  padding: 1.2rem 6.3rem 1.2rem 4.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+  color: #666;
+}
+
+.navButton1.active {
+  color: #28a263;
+  background-color: #f3f3f1;
+  font-weight: 500;
+}
+
+.navButton.active {
+  color: #28a263;
+  background-color: #f3f3f1;
+  font-weight: 500;
+}
+
+/* Special button styling based on layout type */
+.previewLink[data-special]:not([data-special="none"]) {
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+  position: relative;
+  background-color: transparent !important;
+}
+
+/* Stack layout special styling */
+.stackLayout .previewLink[data-special]:not([data-special="none"]) {
+  width: 100%;
+  background-size: 100% 100%;
+}
+
+/* Grid layout special styling */
+.gridLayout .previewLink[data-special]:not([data-special="none"]) {
+  background-size: cover;
+  background-position: center;
+}
+
+/* Carousel layout special styling */
+.carouselLayout .previewLink[data-special]:not([data-special="none"]) {
+  background-size: cover;
+  background-position: center;
+}
+
+/* Special button layout adjustments */
+.stackLayout .previewLink {
+  width: 100%;
+}
+
+.gridLayout .previewLink {
+  min-height: 100px;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+}
+
+.carouselLayout .previewLink {
+  min-width: 110px;
+  margin-right: 1px;
+}
+
+@media (max-width: 1024px) {
+  .phonePreview {
+    width: 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .desktopNav {
+    display: none;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 14% 1rem 2rem;
+    width: 100%;
+    margin-left: 0em;
+    background-color: #f3f3f1;
+    position: fixed;
+    z-index: 1000;
+  }
+
+  .logo h1 {
+    display: none;
+  }
+
+  .logo p {
+    display: none;
+  }
+
+  .shareButton {
+    display: none;
+  }
+
+  .contentArea {
+    flex: 1;
+    display: flex;
+    padding: 0rem 10% 0% 20%;
+    gap: 0rem;
+    margin-top: 15%;
+  }
+
+  .header img {
+    display: block;
+  }
+
+  .mobileNav {
+    display: flex;
+  }
+
+  .headerRight img {
+    display: block;
+    width: 2.5em;
+    margin-left: 11em;
+  }
+
+  .phonePreview {
+    display: none;
+  }
+
+  .contentArea {
+    padding: 1rem;
+  }
+  .navButton {
+    padding: 0rem 0.3rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+  }
+  .navButton1 {
+    padding: 0rem 0.3rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+  }
+
+  .navButton.active {
+    color: #28a263;
+    background-color: transparent;
+    font-weight: 400;
+  }
+
+  .previewLinks {
+    padding: 10px;
+  }
+
+  .previewLink {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .connectButton button {
+    width: 90%;
+    padding: 10px 20px;
+  }
+  .mainSection {
+    padding-bottom: 80px;
+  }
+}
+
+.gridLayout {
+  display: grid;
+  grid-template-columns: repeat(2, 110px);
+  grid-auto-rows: 110px;
+  gap: 12px;
+}
+
+.gridLayout > div {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.gridLayout .previewLink {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 5px 0px 35px 0px;
+  align-items: center;
+  margin-top: 2em;
+  justify-items: flex-start;
+  border-radius: 20px;
+}
+
+.gridLayout .linkIcon {
+  width: 90%;
+  height: 35px;
+  margin: 0 auto 15px;
+  background-color: #ffffff;
+}
+
+.gridLayout .linkIcon img {
+  border-radius: 20%;
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+.carouselLayout {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.carouselLayout .previewLink {
+  width: 20px;
+  padding: 10px 0px 50px 0px;
+  overflow: hidden;
+  margin-top: -1em;
+  word-break: break-word;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-radius: 20px;
+  background-color: #ffffff;
+}
+
+.carouselLayout .previewLink .text {
+  width: 100%;
+}
+
+.carouselLayout .linkIcon {
+  width: 70px;
+  height: 70px;
+  margin-left: 0.7em;
+  border-radius: 50px;
+  margin-bottom: 2em;
+  background-color: #ffffff;
+}
+
+.carouselLayout .linkIcon img {
+  width: 50%;
+  height: 50%;
+  object-fit: contain;
+  border-radius: 0;
+}
