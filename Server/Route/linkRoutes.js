@@ -293,9 +293,10 @@ router.put("/edituserdata", auth(), async (req, res) => {
 router.get("/forward/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const source = req.headers["user-agent"];
-    const ua = useragent.parse(source);
-    const osType = ua.os;
+    const parser = new UAParser(req.headers["user-agent"]);
+    const result = parser.getResult();
+    const osType = result.os.name;
+
     const link = await Link.findByIdAndUpdate(
       id,
       {
