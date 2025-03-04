@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "../Styles/link.module.css";
+import styles from "../Styles/Link.module.css";
 import LinkPopup from "../Popups/Addlink";
 import EditPopup from "../Popups/Editlink";
 import toast, { Toaster } from "react-hot-toast";
