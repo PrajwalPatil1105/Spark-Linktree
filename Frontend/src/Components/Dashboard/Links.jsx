@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "../Styles/Link.module.css";
 import LinkPopup from "../Popups/Addlink";
 import EditPopup from "../Popups/Editlink";
+import AddImg from "../Popups/AddImg";
 import toast, { Toaster } from "react-hot-toast";
 import {
   BarChart2,
@@ -25,14 +26,15 @@ const Links = ({
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [IsImgPopupOpen, setIsImgPopupOpen] = useState(false);
   const [editingLink, setEditingLink] = useState(null);
   const [saving, setSaving] = useState(false);
   const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
   const token = localStorage.getItem("token");
   const [activePopupType, setActivePopupType] = useState("link");
 
-  const handleImageUpload = (e) => {
-    // Handle image upload logic
+  const handleOpenImageUploadPopup = () => {
+    setIsImgPopupOpen(true);
   };
 
   const handleColorChange = (color) => {
@@ -155,7 +157,6 @@ const Links = ({
     }
   };
 
-  // Open popup with specific type
   const openAddLinkPopup = (type) => {
     setActivePopupType(type);
     setIsPopupOpen(true);
@@ -177,7 +178,12 @@ const Links = ({
             className={styles.preview}
           />
           <div className={styles.uploadButtons}>
-            <button className={styles.pickImage}>Pick an image</button>
+            <button
+              className={styles.pickImage}
+              onClick={handleOpenImageUploadPopup}
+            >
+              Pick an image
+            </button>
             <button className={styles.removeImage}>Remove</button>
           </div>
         </div>
@@ -307,6 +313,14 @@ const Links = ({
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
         initialTab={activePopupType}
+        setOnUpdate={setOnUpdate}
+        OnUpdate={OnUpdate}
+      />
+
+      <AddImg
+        isOpen={IsImgPopupOpen}
+        onClose={() => setIsImgPopupOpen(false)}
+        LinkInfo={UserInfo}
         setOnUpdate={setOnUpdate}
         OnUpdate={OnUpdate}
       />

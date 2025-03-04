@@ -1,0 +1,202 @@
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  background: white;
+  border-radius: 24px;
+  padding: 24px 15px 24px 15px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.Maincard {
+  padding: 1em;
+  box-shadow: 0 0 15px rgb(198, 197, 197);
+  border-radius: 20px;
+}
+
+.header {
+  display: flex;
+  gap: 8px;
+  width: 60%;
+  margin-bottom: 2em;
+  background: #f5f5f5;
+  padding: 4px;
+  border-radius: 20px;
+}
+
+.headerBtn {
+  flex: 1;
+  padding: 7px 12px;
+  border-radius: 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  gap: 0.4em;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8em;
+  color: #6c6c6c;
+  transition: all 0.3s ease;
+}
+
+.headerBtn.active {
+  background: #28a263;
+  color: white;
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Maincard h2 {
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.inputGroup {
+  margin: 24px 0;
+}
+
+.inputWrapper {
+  position: relative;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.inputWrapper input {
+  flex: 1;
+  border: none;
+  background: #f5f5f5;
+  border-radius: 10px;
+  padding: 12px 1px 12px 20px;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.input1 {
+  padding: 9px 9em 9px 20px;
+}
+
+.error {
+  min-height: 1.3em;
+
+  font-family: Poppins;
+  font-size: 0.7em;
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1em;
+  margin-left: 6em;
+  margin-top: 2em;
+}
+
+.saveButton {
+  background-color: #28a263;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.saveButton:hover {
+  background-color: #1f8a50;
+}
+
+.cancelButton {
+  background-color: #f5f5f5;
+  color: #666;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cancelButton:hover {
+  background-color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .popup {
+    width: 95%;
+    margin: 16px;
+  }
+  .buttonGroup {
+    display: flex;
+    gap: 1em;
+    margin-left: 1.8em;
+    margin-top: 2em;
+  }
+
+  .platformGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .popup {
+    padding: 16px;
+    padding: 24px 24px 24px 24px;
+  }
+
+  .header {
+    width: 17em;
+    margin-bottom: 16px;
+  }
+  .headerBtn {
+    font-size: 0.7em;
+  }
+
+  .inputWrapper {
+    padding: 6px 12px;
+  }
+
+  .platformGrid {
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 0.6em;
+  }
+
+  .platformBtn img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+
+  .platformBtn span {
+    font-size: 0.6rem;
+    color: #666;
+  }
+
+  .platformBtn {
+    padding: 12px;
+  }
+}
