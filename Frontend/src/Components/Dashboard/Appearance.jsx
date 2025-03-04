@@ -1,21 +1,25 @@
 import { useState, useEffect } from "react";
 import styles from "../Styles/Appearance.module.css";
+import toast, { Toaster } from "react-hot-toast";
 
-const Appearance = ({ userData, setUserData }) => {
+const Appearance = ({ UserInfo, setUserInfo }) => {
+  const [loading, setLoading] = useState(false);
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
+  const token = localStorage.getItem("token");
   const [selectedLayout, setSelectedLayout] = useState(
-    userData?.layout || "stack"
+    UserInfo?.layout || "stack"
   );
   const [selectedTheme, setSelectedTheme] = useState(
-    userData?.theme || "air-snow"
+    UserInfo?.theme || "air-snow"
   );
   const [selectedSpecial, setSelectedSpecial] = useState(
-    userData?.special || "none"
+    UserInfo?.special || "none"
   );
   const [selectedBorderRadius, setSelectedBorderRadius] = useState(
-    userData?.buttonStyle?.borderRadius || "md"
+    UserInfo?.buttonStyle?.borderRadius || "md"
   );
   const [buttonStyle, setButtonStyle] = useState(
-    userData?.buttonStyle || {
+    UserInfo?.buttonStyle || {
       type: "outline",
       backgroundColor: "#c9c9c9",
       textColor: "#ffffff",
@@ -24,9 +28,8 @@ const Appearance = ({ userData, setUserData }) => {
     }
   );
 
-  // Update userData when settings change
   useEffect(() => {
-    setUserData((prev) => ({
+    setUserInfo((prev) => ({
       ...prev,
       layout: selectedLayout,
       theme: selectedTheme,
@@ -42,7 +45,7 @@ const Appearance = ({ userData, setUserData }) => {
     selectedTheme,
     selectedSpecial,
     selectedBorderRadius,
-    setUserData,
+    setUserInfo,
   ]);
 
   const layouts = [
@@ -71,6 +74,8 @@ const Appearance = ({ userData, setUserData }) => {
     { id: "Tiny5", label: "Tiny5" },
     { id: "Single Day", label: "Single Day" },
     { id: "Bebas Neue", label: "Bebas Neue" },
+    { id: "Karla", label: "Karla" },
+    { id: "K2D", label: "K2D" },
   ];
 
   const specialStyles = [
@@ -147,6 +152,31 @@ const Appearance = ({ userData, setUserData }) => {
         return "1.5rem";
       default:
         return "0.5rem";
+    }
+  };
+
+  const saveChanges = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${BASE_URL}url/updateUserData`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(UserInfo),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        toast.success("Changes saved successfully!");
+        setUserInfo(data.userData);
+      } else {
+        toast.error(data?.message || "Failed to save changes");
+      }
+    } catch (error) {
+      toast.error("Failed to save changes");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -580,7 +610,7 @@ const Appearance = ({ userData, setUserData }) => {
             <h3>Button color</h3>
             <div className={styles.colorOption}>
               <input
-                className={styles.colorinput}
+                className={styles.colorInput}
                 type="color"
                 value={buttonStyle.backgroundColor}
                 style={{ backgroundColor: buttonStyle.backgroundColor }}
@@ -595,7 +625,7 @@ const Appearance = ({ userData, setUserData }) => {
             <h3>Button font color</h3>
             <div className={styles.colorOption}>
               <input
-                className={styles.colorinput}
+                className={styles.colorInput}
                 type="color"
                 value={buttonStyle.textColor}
                 style={{
@@ -674,9 +704,27 @@ const Appearance = ({ userData, setUserData }) => {
         </div>
 
         <div className={styles.saveButtonContainer}>
-          <button className={styles.saveButton}>Save</button>
+          <button
+            className={styles.saveButton}
+            onClick={saveChanges}
+            disabled={loading}
+          >
+            {loading ? "Saving..." : "Save"}
+          </button>
         </div>
       </div>
+      <Toaster
+        toastOptions={{
+          style: {
+            color: "white",
+            backgroundColor: "#05A763",
+            fontFamily: "Manrope",
+            fontSize: "0.85em",
+            fontWeight: "400",
+            marginLeft: "3.5em",
+          },
+        }}
+      />
     </div>
   );
 };

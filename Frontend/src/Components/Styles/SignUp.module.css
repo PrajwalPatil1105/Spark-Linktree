@@ -315,8 +315,12 @@ label {
     font-weight: 400;
   }
 
+  .checkboxContainer span {
+    margin-top: 3.2em;
+  }
+
   .belowLine {
-    padding-bottom: 1em;
+    padding-bottom: 3em;
     padding-left: 0em;
     width: 80%;
     text-align: center;
@@ -328,5 +332,9 @@ label {
 
   .Signup {
     font-size: 20px;
+  }
+  .SigninBtn {
+    margin-top: 2.3em;
+    margin-bottom: -1em;
   }
 }

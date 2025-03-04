@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import styles from "../Styles/SignUp.module.css";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
 function SignUp() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [Fname, setFname] = useState("");
   const [Lname, setLname] = useState("");
   const [email, setemail] = useState("");
@@ -49,20 +51,20 @@ function SignUp() {
       email.length >= 3 &&
       email.includes("@") &&
       checkbox &&
-      password.length >= 0 &&
+      password.length >= 1 &&
       password === Compassword
     ) {
       try {
         const responce = await fetch(`${BASE_URL}auth/signup`, {
           method: "POST",
           headers: { "Content-type": "application/JSON" },
-          body: JSON.stringify({ name, email, mobile, password }),
+          body: JSON.stringify({ Fname, Lname, email, password }),
         });
         const data = await responce.json();
         if (data?.code === "1") {
           toast?.success(data?.message);
           setTimeout(() => {
-            Login();
+            navigate("/about", { state: { id: data.id } });
           }, 2000);
         } else {
           toast.error(data?.message);
@@ -180,9 +182,9 @@ function SignUp() {
           toastOptions={{
             style: {
               color: "white",
-              backgroundColor: "rgb(172, 167, 167)",
+              backgroundColor: "#05A763",
               fontFamily: "Manrope",
-              fontSize: "0.95em",
+              fontSize: "0.85em",
               fontWeight: "400",
               marginLeft: "3.5em",
             },

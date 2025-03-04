@@ -7,7 +7,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 function SignUp() {
   const navigate = useNavigate();
-  const [Username, setUsername] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setpassword] = useState("");
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [UsernameErr, setUsernameErr] = useState("");
@@ -16,37 +16,38 @@ function SignUp() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    Username.length === 0
+    username.length === 0
       ? setUsernameErr("*Please Enter UserName")
       : setUsernameErr("");
     password.length === 0
       ? setpasswordErr("*Please Enter Password")
       : setpasswordErr("");
 
-    if (Username.length >= 1 && password.length >= 0) {
+    if (username.length >= 3 && password.length >= 1) {
       try {
-        const responce = await fetch(`${BASE_URL}auth/signup`, {
+        const response = await fetch(`${BASE_URL}auth/login`, {
           method: "POST",
-          headers: { "Content-type": "application/JSON" },
-          body: JSON.stringify({ name, email, mobile, password }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
         });
-        const data = await responce.json();
+        const data = await response.json();
         if (data?.code === "1") {
-          toast?.success(data?.message);
+          localStorage.setItem("token", data.token);
+          toast.success(data?.message);
           setTimeout(() => {
-            Login();
+            navigate("/dashboard");
           }, 2000);
         } else {
-          toast.error(data?.message);
+          toast.error(data.message);
         }
       } catch (error) {
-        toast.error("Sign Up failed. Please try again.");
+        toast.error("Login failed. Please try again.");
       }
     }
   }
 
   function Login() {
-    navigate("/Login");
+    navigate("/signup");
   }
 
   return (
@@ -62,7 +63,7 @@ function SignUp() {
                   className={styles.Nameinput}
                   type="text"
                   name="name"
-                  value={Username}
+                  value={username}
                   placeholder="Spark/Username"
                   onChange={(e) => setUsername(e.target.value)}
                 />
@@ -71,7 +72,7 @@ function SignUp() {
               <div className={styles.InputFields}>
                 <input
                   type={showOldPassword ? "text" : "password"}
-                  placeholder="Old Password"
+                  placeholder="Password"
                   className={styles.Passwordinput}
                   value={password}
                   onChange={(e) => setpassword(e.target.value)}
@@ -110,9 +111,9 @@ function SignUp() {
           toastOptions={{
             style: {
               color: "white",
-              backgroundColor: "rgb(172, 167, 167)",
+              backgroundColor: "#05A763",
               fontFamily: "Manrope",
-              fontSize: "0.95em",
+              fontSize: "0.85em",
               fontWeight: "400",
               marginLeft: "3.5em",
             },

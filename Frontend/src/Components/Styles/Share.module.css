@@ -7,79 +7,6 @@
   position: relative;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 14% 1rem 3rem;
-  width: 93%;
-  margin-left: 13.7em;
-  background-color: #f3f3f1;
-  position: fixed;
-  z-index: 1000;
-}
-
-.header img {
-  display: none;
-}
-
-.logo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-}
-
-.logo h1 {
-  font-size: 1.2em;
-  text-align: left;
-}
-
-.logo p {
-  font-size: 0.8em;
-}
-
-.logo img {
-  height: 35px;
-}
-
-.headerRight {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.headerRight img {
-  display: none;
-}
-
-.headerRight span {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-}
-
-.shareButton {
-  padding: 0.6rem 0.7rem;
-  border: none;
-  border-radius: 20px;
-  background: white;
-  cursor: pointer;
-}
-
-.mainContent {
-  display: flex;
-  flex: 1;
-}
-
-.previewLinksContainer {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  position: relative;
-}
-
 .previewLinks {
   margin-top: 15.5em;
   display: flex;
@@ -103,6 +30,7 @@
   margin-bottom: 0px;
   font-size: 13px;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .linkIcon {
@@ -253,28 +181,12 @@
   object-fit: contain;
 }
 
-.desktopNav {
-  width: 220px;
-  height: 100vh;
-  padding: 2rem 1rem;
-  background-color: #ffffff;
-  border-right: 1px solid #eee;
-  display: flex;
-  top: 0px;
-  align-items: center;
-  padding-top: 2em;
-  position: absolute;
-  flex-direction: column;
-  gap: 1rem;
-  position: fixed;
-}
-
 .contentArea {
   flex: 1;
   display: flex;
-  padding: 0rem 10% 0% 20%;
+  justify-self: center;
   gap: 0rem;
-  margin-top: 5%;
+  margin-top: 0;
 }
 
 .phonePreview {
@@ -408,21 +320,25 @@
   background-color: transparent !important;
 }
 
+/* Stack layout special styling */
 .stackLayout .previewLink[data-special]:not([data-special="none"]) {
   width: 100%;
   background-size: 100% 100%;
 }
 
+/* Grid layout special styling */
 .gridLayout .previewLink[data-special]:not([data-special="none"]) {
   background-size: cover;
   background-position: center;
 }
 
+/* Carousel layout special styling */
 .carouselLayout .previewLink[data-special]:not([data-special="none"]) {
   background-size: cover;
   background-position: center;
 }
 
+/* Special button layout adjustments */
 .stackLayout .previewLink {
   width: 100%;
 }
@@ -439,6 +355,7 @@
   margin-right: 1px;
 }
 
+/* Floating preview button for mobile */
 .floatingPreviewBtn {
   position: fixed;
   bottom: 80px;
@@ -459,6 +376,7 @@
   display: none;
 }
 
+/* Mobile preview overlay */
 .mobilePreviewOverlay {
   position: fixed;
   top: 0;
@@ -478,9 +396,11 @@
   max-width: 320px;
   padding: 0;
   margin: 0 auto;
+  /* Added specific display properties to ensure visibility on mobile */
   display: block !important;
 }
 
+/* Close button for preview */
 .closePreviewBtn {
   position: absolute;
   top: 38.4em;
@@ -496,6 +416,65 @@
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
   cursor: pointer;
   z-index: 2001;
+}
+
+.mainContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f3f3f1;
+}
+
+.contentArea {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.phonePreview {
+  width: 355px;
+  padding: 2rem;
+  position: relative;
+}
+
+.phoneFrame {
+  border: 12px solid #000;
+  border-radius: 40px;
+  height: 580px;
+  overflow: hidden;
+  background: white;
+}
+
+@media (max-width: 1024px) {
+  .phonePreview {
+    width: 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .phonePreview {
+    width: 100%;
+    max-width: 95%;
+  }
+
+  .userProfile {
+    position: fixed;
+    padding: 2rem 14.5%;
+    text-align: center;
+    color: white;
+    border-radius: 25px 25px 25px 25px;
+  }
 }
 
 .gridLayout {
@@ -576,243 +555,4 @@
   height: 50%;
   object-fit: contain;
   border-radius: 0;
-}
-
-.Moblogout {
-  display: none;
-}
-
-.logout {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  font-family: Poppins;
-  margin-top: 9em;
-  margin-right: 1.5em;
-  padding: 0.8em 1.2em;
-  border: none;
-  background-color: #f3f3f1;
-  border-radius: 30px;
-}
-
-.logoutToggle {
-  display: flex;
-  position: fixed;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-top: 45em;
-  margin-left: 3em;
-  padding: 0.2em 0.9em;
-  border: 2px solid black;
-  background-color: transparent;
-  border-radius: 30px;
-}
-
-@media (max-width: 1024px) {
-  .phonePreview {
-    width: 320px;
-  }
-}
-
-@media (max-width: 768px) {
-  .desktopNav {
-    display: none;
-  }
-
-  .logoutToggle {
-    display: none;
-  }
-
-  .Moblogout {
-    display: block;
-    display: flex;
-    position: absolute;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    font-family: Poppins;
-    top: 6em;
-    left: 22em;
-    padding: 0.8em 1.2em;
-    border: 2px solid #b5b5b4;
-    background-color: #f3f3f1;
-    border-radius: 30px;
-  }
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 14% 1rem 2rem;
-    width: 100%;
-    margin-left: 0em;
-    background-color: #f3f3f1;
-    position: fixed;
-    z-index: 1000;
-  }
-
-  .logo h1 {
-    display: none;
-  }
-
-  .logo p {
-    display: none;
-  }
-
-  .shareButton {
-    display: none;
-  }
-
-  .contentArea {
-    flex: 1;
-    display: flex;
-    padding: 0rem 10% 0% 20%;
-    gap: 0rem;
-    margin-top: 15%;
-  }
-
-  .header img {
-    display: block;
-  }
-
-  .mobileNav {
-    display: flex;
-  }
-
-  .headerRight img {
-    display: block;
-    width: 2.5em;
-    margin-left: 11em;
-  }
-
-  .phonePreview {
-    display: none;
-  }
-
-  .contentArea {
-    padding: 1rem;
-  }
-
-  .navButton {
-    padding: 0rem 0.3rem;
-    flex-direction: column;
-    align-items: center;
-    gap: 1px;
-  }
-
-  .navButton1 {
-    padding: 0rem 0.3rem;
-    flex-direction: column;
-    align-items: center;
-    gap: 1px;
-  }
-
-  .navButton.active {
-    color: #28a263;
-    background-color: transparent;
-    font-weight: 400;
-  }
-
-  .previewLinks {
-    padding: 10px;
-  }
-
-  .previewLink {
-    padding: 8px 12px;
-    font-size: 13px;
-  }
-
-  .connectButton button {
-    width: 90%;
-    padding: 10px 20px;
-  }
-
-  .mainSection {
-    padding-bottom: 80px;
-  }
-
-  /* Show floating preview button on mobile */
-  .floatingPreviewBtn {
-    display: flex;
-  }
-
-  .mobilePreviewOverlay .phonePreview {
-    display: block !important;
-    width: 90% !important;
-    max-width: 320px;
-    margin: 0 auto;
-  }
-
-  /* Adjust frame size for better fit on mobile screens */
-  .mobilePreviewContent .phoneFrame {
-    height: 600px;
-    border-width: 11px;
-    justify-content: center;
-  }
-  .mobilePreviewContent .userProfile {
-    position: fixed;
-    width: 18.73em;
-    margin-top: -1px;
-    margin-left: -0.3px;
-    padding: 2rem 3.4rem;
-    text-align: center;
-    color: white;
-    border-radius: 30px 28px 25px 25px;
-  }
-  .mobilePreviewContent .linkHeader {
-    margin-left: 5.5em;
-    margin-top: 13.5em;
-    display: flex;
-    gap: 4px;
-    width: 37.5%;
-    background: #c9c9c9;
-    padding: 3px 3px;
-    position: absolute;
-    border-radius: 20px;
-  }
-
-  .mobilePreviewContent .bottomContent {
-    bottom: -2em;
-    width: 60%;
-    left: 3.8em;
-    position: absolute;
-    background-color: transparent;
-    padding-bottom: 0px;
-  }
-
-  /* Adjust floating button positioning to not interfere with navigation */
-  .floatingPreviewBtn {
-    display: flex;
-    bottom: 80px;
-    right: 20px;
-    padding: 8px 16px;
-    font-size: 14px;
-  }
-
-  .gridLayout .previewLink {
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    padding: 5px 0px 35px 0px;
-    align-items: center;
-    margin-top: 0em;
-    margin-left: 1.7em;
-    justify-items: flex-start;
-    border-radius: 20px;
-  }
-
-  .sparkLogo {
-    display: none;
-    margin: 2px 0;
-    text-align: center;
-    font-weight: bold;
-    font-size: 16px;
-  }
-
-  .userProfile h2 {
-    margin-left: 0.3em;
-  }
 }

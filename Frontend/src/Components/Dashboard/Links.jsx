@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "../Styles/link.module.css";
 import LinkPopup from "../Popups/Addlink";
+import EditPopup from "../Popups/Editlink";
+import toast, { Toaster } from "react-hot-toast";
 import {
   BarChart2,
   Trash,
@@ -8,16 +10,25 @@ import {
   GripVertical,
   Store,
   Pencil,
+  Loader,
+  Save,
 } from "lucide-react";
 
-const Links = ({ userData, setUserData }) => {
+const Links = ({
+  setUserInfo,
+  UserInfo,
+  setLinkInfo,
+  LinkInfo,
+  setOnUpdate,
+  OnUpdate,
+}) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [trying, settry] = useState([]);
-
-  useEffect(() => {
-    console.log(userData);
-  }, []);
-
+  const [loading, setLoading] = useState(false);
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [editingLink, setEditingLink] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
+  const token = localStorage.getItem("token");
   const [activePopupType, setActivePopupType] = useState("link");
 
   const handleImageUpload = (e) => {
@@ -25,33 +36,123 @@ const Links = ({ userData, setUserData }) => {
   };
 
   const handleColorChange = (color) => {
-    setUserData((prev) => ({
+    setUserInfo((prev) => ({
       ...prev,
       bannerColor: color,
     }));
   };
 
-  const handleToggleLink = (index) => {
-    setUserData((prev) => ({
-      ...prev,
-      links: prev.links.map((link, i) =>
-        i === index ? { ...link, enabled: !link.enabled } : link
-      ),
-    }));
+  const handleToggleLink = async (index) => {
+    const linkId = LinkInfo[index]?._id;
+    const newEnabledStatus = !LinkInfo[index].enabled;
+    const updatedLinkInfo = [...LinkInfo];
+    updatedLinkInfo[index] = {
+      ...updatedLinkInfo[index],
+      enabled: newEnabledStatus,
+    };
+    setLinkInfo(updatedLinkInfo);
+
+    if (linkId) {
+      try {
+        const response = await fetch(`${BASE_URL}url/updateLink/${linkId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ enabled: newEnabledStatus }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          toast.success(data?.message);
+        } else {
+          updatedLinkInfo[index] = {
+            ...updatedLinkInfo[index],
+            enabled: !newEnabledStatus,
+          };
+          setLinkInfo(updatedLinkInfo);
+          toast.error(data.message || "Failed to update link");
+        }
+      } catch (error) {
+        updatedLinkInfo[index] = {
+          ...updatedLinkInfo[index],
+          enabled: !newEnabledStatus,
+        };
+        setLinkInfo(updatedLinkInfo);
+        toast.error("Failed to update link");
+      }
+    }
   };
 
-  const handleDeleteLink = (index) => {
-    setUserData((prev) => ({
-      ...prev,
-      links: prev.links.filter((_, i) => i !== index),
-    }));
+  const deleteLink = async (linkId) => {
+    try {
+      const response = await fetch(`${BASE_URL}url/deleteLink/${linkId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        toast.success("Link deleted successfully");
+        return true;
+      } else {
+        toast.error(data.message || "Failed to delete link");
+        return false;
+      }
+    } catch (error) {
+      toast.error("Failed to delete link");
+      return false;
+    }
+  };
+
+  const handleDeleteLink = async (index) => {
+    const confirmDelete = window.confirm("Do you want to delete the link?");
+    if (!confirmDelete) return;
+    const linkId = LinkInfo[index]?._id;
+    if (!linkId) return;
+    const updatedLinkInfo = LinkInfo.filter((_, i) => i !== index);
+    setLinkInfo(updatedLinkInfo);
+    const success = await deleteLink(linkId);
+    if (!success) {
+      setLinkInfo(LinkInfo);
+    }
   };
 
   const handleAddLink = (newLink) => {
-    setUserData((prev) => ({
+    setUserInfo((prev) => ({
       ...prev,
       links: [...prev.links, newLink],
     }));
+  };
+
+  const saveUserProfile = async () => {
+    setSaving(true);
+    try {
+      const response = await fetch(`${BASE_URL}url/updateUserProfile`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          username: UserInfo.username,
+          bio: UserInfo.bio,
+          bannerColor: UserInfo.bannerColor,
+        }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        toast.success("Profile updated successfully");
+      } else {
+        toast.error(data.message || "Failed to update profile");
+      }
+    } catch (error) {
+      toast.error("Failed to update profile");
+    } finally {
+      setSaving(false);
+    }
   };
 
   // Open popup with specific type
@@ -60,10 +161,14 @@ const Links = ({ userData, setUserData }) => {
     setIsPopupOpen(true);
   };
 
+  const handleOpenEditPopup = (link) => {
+    setEditingLink(link);
+    setIsEditPopupOpen(true);
+  };
+
   return (
     <div className={styles.appearanceContainer}>
       <h1>Profile</h1>
-
       <div className={styles.profileSection}>
         <div className={styles.imageUpload}>
           <img
@@ -82,9 +187,9 @@ const Links = ({ userData, setUserData }) => {
             <label>Profile Title</label>
             <input
               type="text"
-              value={userData.username}
+              value={UserInfo?.username}
               onChange={(e) =>
-                setUserData((prev) => ({ ...prev, username: e.target.value }))
+                setUserInfo((prev) => ({ ...prev, username: e.target.value }))
               }
             />
           </div>
@@ -92,13 +197,13 @@ const Links = ({ userData, setUserData }) => {
           <div className={styles.inputGroup}>
             <label>Bio</label>
             <textarea
-              value={userData.bio}
+              value={UserInfo?.bio || "Bio"}
               onChange={(e) =>
-                setUserData((prev) => ({ ...prev, bio: e.target.value }))
+                setUserInfo((prev) => ({ ...prev, bio: e.target.value }))
               }
               maxLength={80}
             />
-            <span className={styles.charCount}>{userData.bio.length}/80</span>
+            <span className={styles.charCount}>{UserInfo?.bio.length}/80</span>
           </div>
         </div>
       </div>
@@ -127,9 +232,9 @@ const Links = ({ userData, setUserData }) => {
           <Plus size={20} /> Add
         </button>
 
-        {userData.links && userData.links.length > 0 ? (
+        {LinkInfo && LinkInfo.length > 0 ? (
           <div className={styles.linksList}>
-            {userData.links.map((link, index) => (
+            {LinkInfo?.map((link, index) => (
               <div key={index} className={styles.linkCard}>
                 {/* Handle/Drag Icon */}
                 <div className={styles.handleIcon}>
@@ -142,22 +247,26 @@ const Links = ({ userData, setUserData }) => {
                   <div className={styles.linkTitleRow}>
                     <div className={styles.platformName}>
                       {link.platformName}
-                      <button className={styles.editButton}>
+                      <button
+                        className={styles.editButton}
+                        onClick={() => handleOpenEditPopup(link)}
+                      >
                         <Pencil size={16} />
                       </button>
                     </div>
                   </div>
-
-                  {/* URL with Edit button */}
                   <div className={styles.linkUrlRow}>
                     <div className={styles.linkUrl}>{link.url}</div>
-                    <button className={styles.editButton1}>
+                    <button
+                      className={styles.editButton1}
+                      onClick={() => handleOpenEditPopup(link)}
+                    >
                       <Pencil size={16} />
                     </button>
                   </div>
                   <div className={styles.clickStats}>
                     <BarChart2 size={16} color="#999" />
-                    <span>{link.clicks} clicks</span>
+                    <span>{link.totalClicks} clicks</span>
                   </div>
                 </div>
 
@@ -194,12 +303,25 @@ const Links = ({ userData, setUserData }) => {
         )}
       </div>
 
-      {/* Link Popup */}
       <LinkPopup
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
-        onAddLink={handleAddLink}
         initialTab={activePopupType}
+        setOnUpdate={setOnUpdate}
+        OnUpdate={OnUpdate}
+      />
+      <EditPopup
+        isOpen={isEditPopupOpen}
+        onClose={() => setIsEditPopupOpen(false)}
+        linkData={editingLink}
+        onUpdateLink={(updatedLink) => {
+          if (editingLink && editingLink._id) {
+            const updatedLinkInfo = LinkInfo.map((link) =>
+              link._id === updatedLink._id ? updatedLink : link
+            );
+            setLinkInfo(updatedLinkInfo);
+          }
+        }}
       />
 
       <h2 className={styles.bannerHead}>Banner</h2>
@@ -208,13 +330,16 @@ const Links = ({ userData, setUserData }) => {
           <div className={styles.bannerPreview}>
             <div
               className={styles.userProfilePreview}
-              style={{ backgroundColor: userData.bannerColor }}
+              style={{ backgroundColor: UserInfo?.bannerColor }}
             >
               <div className={styles.profileImagePreview}>
                 <img src={`./Images/Face.png`} alt="Profile" />
               </div>
-              <h2>@{userData.username || "opopo_08"}</h2>
-              <p>{userData.username || "opopo_08"}</p>
+              <h2>{UserInfo?.username || "UserName"}</h2>
+              <div className={styles.biosection}>
+                <img src="./Images/FooterLogo.png" alt="" />
+                <p>{UserInfo?.bio || "Bio"}</p>
+              </div>
             </div>
           </div>
           <h3>Custom Background Color</h3>
@@ -237,14 +362,38 @@ const Links = ({ userData, setUserData }) => {
           </div>
           <input
             type="text"
-            value={userData.bannerColor}
+            value={UserInfo?.bannerColor}
             onChange={(e) => handleColorChange(e.target.value)}
             className={styles.colorInput}
           />
         </div>
       </div>
 
-      <button className={styles.saveButton}>Save</button>
+      <button
+        className={styles.saveButton}
+        onClick={saveUserProfile}
+        disabled={saving}
+      >
+        {saving ? (
+          <>
+            <Loader size={16} className={styles.spinner} /> Saving...
+          </>
+        ) : (
+          <>Save</>
+        )}
+      </button>
+      <Toaster
+        toastOptions={{
+          style: {
+            color: "white",
+            backgroundColor: "#05A763",
+            fontFamily: "Manrope",
+            fontSize: "0.85em",
+            fontWeight: "400",
+            marginLeft: "3.5em",
+          },
+        }}
+      />
     </div>
   );
 };

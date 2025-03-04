@@ -1,31 +1,15 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import styles from "../Styles/Dashboard.module.css";
-import Links from "../Dashboard/Links";
-import Appearance from "../Dashboard/Appearance";
-import Analytics from "../Dashboard/Analytics";
-import Setting from "../Dashboard/Setting";
-import {
-  GalleryVertical,
-  ChartPie,
-  Layers2,
-  Settings,
-  Share,
-  Share2,
-  Eye,
-  X,
-  LogOut,
-} from "lucide-react";
+import styles from "../Styles/Share.module.css";
 import { useEffect } from "react";
 
-const Dashboard = () => {
+const ShareLinks = () => {
+  const { UserId } = useParams();
   const [activeTab, setActiveTab] = useState("links");
   const [activeContentType, setActiveContentType] = useState("link");
   const [loading, setLoading] = useState(true);
   const [OnUpdate, setOnUpdate] = useState(false);
-  const [ShowLogout, setShowLogout] = useState(false);
-  const [ShowMobLogout, setShowMobLogout] = useState(false);
   const [showMobilePreview, setShowMobilePreview] = useState(false);
   const navigate = useNavigate();
   const [UserInfo, setUserInfo] = useState();
@@ -33,53 +17,31 @@ const Dashboard = () => {
   const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
   const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    if (!token) {
-      toast.error("Please Login");
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
-    }
-  }, []);
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case "links":
-        return (
-          <Links
-            UserInfo={UserInfo}
-            setUserInfo={setUserInfo}
-            LinkInfo={LinkInfo}
-            setLinkInfo={setLinkInfo}
-            setOnUpdate={setOnUpdate}
-            OnUpdate={OnUpdate}
-          />
-        );
-      case "appearance":
-        return <Appearance UserInfo={UserInfo} setUserInfo={setUserInfo} />;
-      case "analytics":
-        return <Analytics UserInfo={UserInfo} LinkInfo={LinkInfo} />;
-      case "Setting":
-        return <Setting UserInfo={UserInfo} />;
-      default:
-        return (
-          <Links
-            UserInfo={UserInfo}
-            setUserInfo={setUserInfo}
-            LinkInfo={LinkInfo}
-            setLinkInfo={setLinkInfo}
-          />
-        );
+  const forward = async (linkId) => {
+    try {
+      const response = await fetch(`${BASE_URL}url/forward/${linkId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        console.error("No URL found in response");
+      }
+    } catch (error) {
+      console.error("Error redirecting link:", error);
     }
   };
 
   async function fetchUserdata() {
     try {
-      const response = await fetch(`${BASE_URL}url/UserData`, {
+      const response = await fetch(`${BASE_URL}url/Userdata/${UserId}`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
       });
       const data = await response.json();
@@ -98,11 +60,10 @@ const Dashboard = () => {
 
   async function fetchlinkdata() {
     try {
-      const response = await fetch(`${BASE_URL}url/LinkData`, {
+      const response = await fetch(`${BASE_URL}url/Linkdata/${UserId}`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
       });
       const data = await response.json();
@@ -127,13 +88,10 @@ const Dashboard = () => {
     fetchlinkdata();
   }, [OnUpdate]);
 
-  function handleLogout() {
-    toast.success("Log Out Successfully");
-    setTimeout(() => {
-      localStorage.clear();
-      navigate("/login");
-    }, 2000);
-  }
+  useEffect(() => {
+    console.log(UserInfo);
+    console.log(LinkInfo);
+  }, [UserInfo, LinkInfo]);
 
   const getButtonStyle = (isMobilePreview = false) => {
     const { buttonStyle, special, layout } = UserInfo || {};
@@ -205,25 +163,25 @@ const Dashboard = () => {
     if (special && special !== "none") {
       const specialImages = {
         stack: {
-          wavy: "./Images/Stack/Special1ST.png",
-          dotted: "./Images/Stack/Special2S.png",
-          dashed: "./Images/Stack/Special3S.png",
-          gradient: "./Images/Stack/Special5S.png",
-          glow: "./Images/Stack/Special6S.png",
+          wavy: "../Images/Stack/Special1ST.png",
+          dotted: "../Images/Stack/Special2S.png",
+          dashed: "../Images/Stack/Special3S.png",
+          gradient: "../Images/Stack/Special5S.png",
+          glow: "../Images/Stack/Special6S.png",
         },
         grid: {
-          wavy: "./Images/Grid/Special1G.png",
-          dotted: "./Images/Grid/Special2G.png",
-          dashed: "./Images/Grid/Special3G.png",
-          gradient: "./Images/Grid/Special5G.png",
-          glow: "./Images/Grid/Special6G.png",
+          wavy: "../Images/Grid/Special1G.png",
+          dotted: "../Images/Grid/Special2G.png",
+          dashed: "../Images/Grid/Special3G.png",
+          gradient: "../Images/Grid/Special5G.png",
+          glow: "../Images/Grid/Special6G.png",
         },
         carousel: {
-          wavy: "./Images/Carousel/Special1C.png",
-          dotted: "./Images/Carousel/Special2C.png",
-          dashed: "./Images/Carousel/Special3C.png",
-          gradient: "./Images/Carousel/Special5C.png",
-          glow: "./Images/Carousel/Special6C.png",
+          wavy: "../Images/Carousel/Special1C.png",
+          dotted: "../Images/Carousel/Special2C.png",
+          dashed: "../Images/Carousel/Special3C.png",
+          gradient: "../Images/Carousel/Special5C.png",
+          glow: "../Images/Carousel/Special6C.png",
         },
       };
 
@@ -293,20 +251,8 @@ const Dashboard = () => {
 
   const showPreview = activeTab === "links" || activeTab === "appearance";
 
-  // Create phone preview component to reuse in both desktop and mobile
   const PhonePreviewComponent = ({ className, fullScreen = false }) => (
-    <div
-      className={`${styles.phonePreview} ${className || ""}`}
-      style={{ display: fullScreen ? "block" : "" }}
-    >
-      {fullScreen && (
-        <button
-          className={styles.closePreviewBtn}
-          onClick={() => setShowMobilePreview(false)}
-        >
-          <X size={20} />
-        </button>
-      )}
+    <div className={styles.phonePreview}>
       <div className={styles.phoneFrame}>
         <div
           className={styles.previewContent}
@@ -319,11 +265,8 @@ const Dashboard = () => {
             className={styles.userProfile}
             style={{ backgroundColor: UserInfo?.bannerColor }}
           >
-            <button className={styles.share}>
-              <Share size={18} />
-            </button>
             <div className={styles.profileImage}>
-              <img src={`./Images/Face.png`} alt="Profile" />
+              <img src={`../Images/Face.png`} alt="Profile" />
             </div>
             <h2>{UserInfo?.username || "UserName"}</h2>
           </div>
@@ -369,11 +312,15 @@ const Dashboard = () => {
                   style={getButtonStyle(fullScreen)}
                   data-special={UserInfo?.special || "none"}
                   data-layout={UserInfo?.layout}
+                  onClick={() => forward(link._id)}
                 >
                   {link && (
                     <div className={styles.linkIcon}>
                       {link.platformIcon ? (
-                        <img src={link.platformIcon} alt={link.platformName} />
+                        <img
+                          src={"." + link.platformIcon}
+                          alt={link.platformName}
+                        />
                       ) : (
                         <div className={styles.defaultIcon}></div>
                       )}
@@ -398,170 +345,25 @@ const Dashboard = () => {
           <button>Get Connected</button>
         </div>
         <div className={styles.sparkLogo}>
-          <img src="./Images/SignIn Logo.png" alt="SPARK" />
+          <img src="../Images/SignIn Logo.png" alt="SPARK" />
         </div>
       </div>
     </div>
   );
-
   return (
     <div className={styles.dashboardContainer}>
-      {/* Mobile Phone Preview Popup - shows when showMobilePreview is true */}
-      {showMobilePreview && (
-        <div
-          className={styles.mobilePreviewOverlay}
-          onClick={(e) => {
-            // Close when clicking outside the preview content
-            if (e.target.className === styles.mobilePreviewOverlay) {
-              setShowMobilePreview(false);
-            }
-          }}
-        >
-          <PhonePreviewComponent
-            className={styles.mobilePreviewContent}
-            fullScreen={true}
-          />
-        </div>
-      )}
-
-      <header className={styles.header}>
-        <div className={styles.logo}>
-          <img src="./Images/SignIn Logo.png" alt="Spark" />
-          <h1>Hi, {UserInfo?.Fname}!</h1>
-          <p>Congratulations . You got a great response today . </p>
-        </div>
-        <div className={styles.headerRight}>
-          <img
-            src="./Images/Face.png"
-            alt=""
-            onClick={() => setShowMobLogout(!ShowMobLogout)}
-          />
-          <button className={styles.shareButton}>
-            <span>
-              <Share2 size={18} /> Share
-            </span>
-          </button>
-        </div>
-      </header>
-      {ShowMobLogout && (
-        <button className={styles.Moblogout} onClick={handleLogout}>
-          <LogOut size={20} /> LogOut
-        </button>
-      )}
-
       <div className={styles.mainContent}>
-        {/* Desktop Navigation */}
-        <nav className={styles.desktopNav}>
-          <div className={styles.logo}>
-            <img src="./Images/SignIn Logo.png" alt="Spark" />
-          </div>
-          <button
-            className={`${styles.navButton1} ${
-              activeTab === "links" ? styles.active : ""
-            }`}
-            onClick={() => setActiveTab("links")}
-          >
-            <GalleryVertical size={20} /> Links
-          </button>
-          <button
-            className={`${styles.navButton} ${
-              activeTab === "appearance" ? styles.active : ""
-            }`}
-            onClick={() => setActiveTab("appearance")}
-          >
-            <Layers2 size={20} /> Appearance
-          </button>
-          <button
-            className={`${styles.navButton} ${
-              activeTab === "analytics" ? styles.active : ""
-            }`}
-            onClick={() => setActiveTab("analytics")}
-          >
-            <ChartPie size={20} /> Analytics
-          </button>
-          <button
-            className={`${styles.navButton} ${
-              activeTab === "Setting" ? styles.active : ""
-            }`}
-            onClick={() => setActiveTab("Setting")}
-          >
-            <Settings size={20} /> Setting
-          </button>
-          <div className={styles.logoutContainer}>
-            {ShowLogout && (
-              <button className={styles.logout} onClick={handleLogout}>
-                <LogOut size={20} /> LogOut
-              </button>
-            )}
-          </div>
-        </nav>
-        <button
-          className={styles.logoutToggle}
-          onClick={(e) => {
-            e.stopPropagation();
-            setShowLogout(!ShowLogout);
-          }}
-        >
-          <img src="./Images/MobileFace.png" alt="" />
-          {UserInfo?.Fname}
-        </button>
-
         <div className={styles.contentArea}>
           {showPreview && (
             <PhonePreviewComponent className={styles.desktopPhonePreview} />
           )}
-          <div className={styles.mainSection}>{renderContent()}</div>
         </div>
       </div>
-
-      {/* Floating preview button for mobile */}
-      <button
-        className={styles.floatingPreviewBtn}
-        onClick={() => setShowMobilePreview(true)}
-      >
-        <Eye size={20} /> Preview
-      </button>
-
-      {/* Mobile Navigation */}
-      <nav className={styles.mobileNav}>
-        <button
-          className={`${styles.navButton} ${
-            activeTab === "links" ? styles.active : ""
-          }`}
-          onClick={() => setActiveTab("links")}
-        >
-          <GalleryVertical size={18} /> Links
-        </button>
-        <button
-          className={`${styles.navButton} ${
-            activeTab === "appearance" ? styles.active : ""
-          }`}
-          onClick={() => setActiveTab("appearance")}
-        >
-          <Layers2 size={18} /> Appearance
-        </button>
-        <button
-          className={`${styles.navButton} ${
-            activeTab === "analytics" ? styles.active : ""
-          }`}
-          onClick={() => setActiveTab("analytics")}
-        >
-          <ChartPie size={18} /> Analytics
-        </button>
-        <button
-          className={`${styles.navButton} ${
-            activeTab === "Setting" ? styles.active : ""
-          }`}
-          onClick={() => setActiveTab("Setting")}
-        >
-          <Settings size={18} /> Setting
-        </button>
-      </nav>
       <Toaster
         toastOptions={{
           style: {
             color: "white",
-            backgroundColor: "#05A763",
+            backgroundColor: "rgb(172, 167, 167)",
             fontFamily: "Manrope",
             fontSize: "0.95em",
             fontWeight: "400",
@@ -573,4 +375,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default ShareLinks;

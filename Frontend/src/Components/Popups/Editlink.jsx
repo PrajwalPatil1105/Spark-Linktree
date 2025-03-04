@@ -1,155 +1,305 @@
-import React, { useEffect, useState } from "react";
-import styles from "../Styles/Editlink.module.css";
-import { X } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import styles from "../Styles/Addlink.module.css";
+import { Copy, Store, Trash2 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 
-function Editlink({ setEditlinkbtn, currLink, setrefresh }) {
-  const [link, setlink] = useState("");
-  const [remark, setremake] = useState("");
-  const [ExpDate, setExpDate] = useState(null);
-  const [Adddate, setAdddate] = useState(false);
-  const [dateerr, setdataerr] = useState("");
+const EditPopup = ({ isOpen, onClose, linkData, onUpdateLink }) => {
+  const [activeTab, setActiveTab] = useState("link");
+  const [selectedPlatform, setSelectedPlatform] = useState(null);
+  const [formData, setFormData] = useState({
+    title: "",
+    url: "",
+  });
+  const [toggleEnabled, setToggleEnabled] = useState(false);
+  const [formValid, setFormValid] = useState(false);
   const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
+  const popupRef = useRef();
 
-  function onSubmit(e) {
-    e.preventDefault();
-    if (Adddate && ExpDate.length === "0") {
-      setdataerr("* Please Enter Date");
+  const socialPlatforms = [
+    { id: "instagram", name: "Instagram", icon: "./Images/Insta.png" },
+    { id: "facebook", name: "FaceBook", icon: "./Images/Facebook.png" },
+    { id: "youtube", name: "YouTube", icon: "./Images/YouTube.png" },
+    { id: "twitter", name: "X", icon: "./Images/X.png" },
+  ];
+
+  const shopPlatforms = [
+    { id: "amazon", name: "Amazon", icon: "./Images/Amazon.png" },
+    { id: "flipkart", name: "Flipkart", icon: "/Images/Fkart.png" },
+    { id: "Zomato", name: "Zomato", icon: "/Images/Zomato.png" },
+  ];
+
+  useEffect(() => {
+    if (linkData && isOpen) {
+      setFormData({
+        title: linkData.title || "",
+        url: linkData.url || "",
+      });
+      setActiveTab(linkData.type === "shop" ? "shop" : "link");
+      const platforms =
+        linkData.type === "shop" ? shopPlatforms : socialPlatforms;
+      const platformMatch = platforms.find(
+        (p) => p.name.toLowerCase() === linkData.platformName.toLowerCase()
+      );
+      setSelectedPlatform(platformMatch || null);
+
+      setToggleEnabled(false);
+      setFormValid(true);
+    }
+  }, [linkData, isOpen]);
+
+  console.log(linkData);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (!linkData) return;
+
+    const platforms = activeTab === "shop" ? shopPlatforms : socialPlatforms;
+    const platformMatch = platforms.find(
+      (p) => p.name === linkData.platformName
+    );
+
+    if (platformMatch) {
+      setSelectedPlatform(platformMatch);
     } else {
-      setdataerr("");
-      updateLink();
+      setSelectedPlatform(null);
+    }
+  }, [activeTab, linkData]);
+
+  useEffect(() => {
+    validateFields(false);
+  }, [formData, selectedPlatform]);
+
+  useEffect(() => {
+    if (toggleEnabled && formValid) {
+      handleSaveLink();
+    }
+  }, [toggleEnabled]);
+
+  const validateFields = (showErrors = true) => {
+    let isValid = true;
+
+    if (!formData.title.trim()) {
+      if (showErrors) toast.error("Title is required");
+      isValid = false;
     }
 
-    async function updateLink() {
+    if (!formData.url.trim()) {
+      if (showErrors) toast.error("URL is required");
+      isValid = false;
+    } else if (
+      !formData.url.startsWith("http://") &&
+      !formData.url.startsWith("https://")
+    ) {
+      if (showErrors)
+        toast.error(
+          "Please enter a valid URL (starting with http:// or https://)"
+        );
+      isValid = false;
+    }
+
+    if (!selectedPlatform) {
+      if (showErrors) toast.error("Please select a platform");
+      isValid = false;
+    }
+
+    setFormValid(isValid);
+    return isValid;
+  };
+
+  const handlePlatformSelect = (platform) => {
+    setSelectedPlatform(platform);
+  };
+
+  const handleSaveLink = async () => {
+    const token = localStorage.getItem("token");
+    if (formValid && linkData && linkData._id) {
       try {
-        const response = await fetch(`${BASE_URL}url/editinglink/${currLink}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            originalLink: link,
-            remark: remark,
-            expiryDate: ExpDate,
-          }),
-        });
-        if (response.ok) {
-          const data = await response.json();
-          toast.success("Link updated successfully");
-          setEditlinkbtn(false);
-          setrefresh((prev) => !prev);
+        const updatedLinkPayload = {
+          url: formData.url,
+          title: formData.title,
+          type: activeTab === "shop" ? "shop" : "link",
+          platform: selectedPlatform.id,
+          platformName: selectedPlatform.name,
+          platformIcon: selectedPlatform.icon,
+        };
+        const response = await fetch(
+          `${BASE_URL}url/updateLink/${linkData._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(updatedLinkPayload),
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`Failed to update link: ${response.status}`);
+        }
+        const data = await response.json();
+        if (data?.code === "1") {
+          toast.success(data?.message || "Link updated successfully");
+          const updatedLink = {
+            ...linkData,
+            ...updatedLinkPayload,
+          };
+          onUpdateLink(updatedLink);
+          if (toggleEnabled) {
+            setTimeout(() => {
+              onClose();
+            }, 2000);
+          }
         } else {
-          toast.error("Faild to Update");
+          throw new Error(data.message || "Failed to update link");
         }
       } catch (error) {
-        toast.error("Failed to update the link");
+        console.error("Error updating link:", error);
+        toast.error(error.message || "Failed to update link");
+        setToggleEnabled(false);
       }
     }
-  }
+  };
 
-  useEffect(() => {
-    Adddate ? setdataerr("* Select The Date") : setdataerr("");
-  }, [Adddate]);
-
-  useEffect(() => {
-    fetchalink();
-  }, []);
-
-  async function fetchalink() {
-    try {
-      const response = await fetch(`${BASE_URL}url/editlinkdata/${currLink}`, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setlink(data?.originalLink);
-        setremake(data?.remark);
-        const formattedDate = data.expiryDate
-          ? new Date(data.expiryDate).toISOString().split("T")[0]
-          : null;
-        setExpDate(formattedDate);
+  const handleToggleChange = (e) => {
+    const isChecked = e.target.checked;
+    setToggleEnabled(isChecked);
+    if (isChecked) {
+      if (validateFields(true)) {
+        handleSaveLink();
       } else {
-        toast.error("Failed to fetch link data");
+        setToggleEnabled(false);
       }
-    } catch (error) {
-      console.error("Error deleting the link:", error);
     }
-  }
+  };
 
-  function toggleBackground() {
-    setAdddate((prev) => (prev === false ? true : false));
-  }
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(formData.url);
+    toast.success("URL copied to clipboard");
+  };
+
+  const handleDelLink = () => {
+    setFormData({
+      ...formData,
+      url: "",
+    });
+  };
+
+  if (!isOpen) return null;
+
+  const currentPlatforms =
+    activeTab === "shop" ? shopPlatforms : socialPlatforms;
+
   return (
-    <div className={styles.home}>
-      <div className={styles.modal}>
-        <h2 className={styles.title}>
-          <p>Edit Link</p>
-          <span className={styles.close} onClick={() => setEditlinkbtn(false)}>
-            <X size={22} />
-          </span>
-        </h2>
-        <form className={styles.form} onSubmit={onSubmit}>
-          <div className={styles.formGroup}>
-            <label htmlFor="destinationUrl" className={styles.label}>
-              Destination Url *
-            </label>
-            <input
-              type="text"
-              value={link}
-              onChange={(e) => setlink(e.target.value)}
-              className={styles.input}
-              placeholder="https://web.whatsapp.com/"
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label htmlFor="comments" className={styles.label}>
-              Remarks *
-            </label>
-            <textarea
-              value={remark}
-              onChange={(e) => setremake(e.target.value)}
-              className={styles.textarea}
-              placeholder="Add remarks"
-            ></textarea>
-          </div>
-          <div className={styles.formGroup}>
-            <label htmlFor="comments" className={styles.label}>
-              <p>Link Expiration</p>
-              <div className={styles.LDbtn}>
-                <button
-                  type="button"
-                  style={{ marginLeft: Adddate == true ? "21px" : "3px" }}
-                  onClick={toggleBackground}
-                  className={styles.LBtoggel}
-                ></button>
+    <div className={styles.popupOverlay}>
+      <div ref={popupRef} className={styles.popup}>
+        {/* Tab Header */}
+        <div className={styles.header}>
+          <button
+            className={`${styles.headerBtn} ${
+              activeTab === "link" ? styles.active : ""
+            }`}
+            onClick={() => setActiveTab("link")}
+          >
+            <Store size={22} /> Edit Link
+          </button>
+          <button
+            className={`${styles.headerBtn} ${
+              activeTab === "shop" ? styles.active : ""
+            }`}
+            onClick={() => setActiveTab("shop")}
+          >
+            <Store size={22} /> Edit Shop
+          </button>
+        </div>
+
+        <div className={styles.Maincard}>
+          <h2>Edit URL</h2>
+          {/* Title Input */}
+          <div className={styles.inputGroup}>
+            <div className={styles.inputWrapper}>
+              <input
+                type="text"
+                placeholder="Link title"
+                value={formData.title}
+                onChange={(e) => {
+                  setFormData((prev) => ({ ...prev, title: e.target.value }));
+                }}
+              />
+
+              <div className={styles.titleContainer}>
+                <label className={styles.toggle} title="Toggle to save changes">
+                  <input
+                    type="checkbox"
+                    checked={toggleEnabled}
+                    onChange={handleToggleChange}
+                  />
+                  <span className={styles.slider}></span>
+                </label>
               </div>
-            </label>
-            <input
-              type="date"
-              className={styles.input}
-              value={ExpDate}
-              disabled={!Adddate}
-              onChange={(e) => setExpDate(e.target.value)}
-            ></input>
-            <p className={styles.note}>{dateerr}</p>
+            </div>
+
+            {/* URL Input */}
+            <div className={styles.inputWrapper}>
+              <input
+                type="text"
+                placeholder="Link URL"
+                value={formData.url}
+                onChange={(e) => {
+                  setFormData((prev) => ({ ...prev, url: e.target.value }));
+                }}
+              />
+              <button className={styles.copyBtn} onClick={handleCopyLink}>
+                <Copy size={16} />
+              </button>
+              <button className={styles.DelBtn} onClick={handleDelLink}>
+                <Trash2 size={16} />
+              </button>
+            </div>
           </div>
-          <footer className={styles.actions}>
-            <button type="button" className={styles.cancelBtn}>
-              Clear
-            </button>
-            <button type="submit" className={styles.submitBtn}>
-              Save
-            </button>
-          </footer>
-        </form>
+
+          <div className={styles.platformSection}>
+            <h3>Applications</h3>
+            <div className={styles.platformGrid}>
+              {currentPlatforms.map((platform) => (
+                <button
+                  key={platform.id}
+                  className={`${styles.platformBtn} ${
+                    selectedPlatform?.id === platform.id ? styles.selected : ""
+                  }`}
+                  onClick={() => handlePlatformSelect(platform)}
+                >
+                  <img src={platform.icon} alt={platform.name} />
+                  <span>{platform.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
+      <Toaster
+        toastOptions={{
+          style: {
+            color: "white",
+            backgroundColor: "rgb(172, 167, 167)",
+            fontFamily: "Manrope",
+            fontSize: "0.95em",
+            fontWeight: "400",
+            marginLeft: "3.5em",
+          },
+        }}
+      />
     </div>
   );
-}
+};
 
-export default Editlink;
+export default EditPopup;

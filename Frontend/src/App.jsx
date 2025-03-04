@@ -5,6 +5,7 @@ import SignUp from "./Components/Register/SignUp";
 import Landing from "./Components/LandingPage/Landing";
 import About from "./Components/About/About";
 import Dashboard from "./Components/Dashboard/Dashboard";
+import Share from "./Components/ShareDashboard/Share";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/Share/:UserId" element={<Share />} />
       </Routes>
     </BrowserRouter>
   );

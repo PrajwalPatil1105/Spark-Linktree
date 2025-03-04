@@ -1,0 +1,134 @@
+.settingsContainer {
+  max-width: 100%;
+  margin: 10px -2em;
+  padding: 20px 1.5em 20px 20px;
+  border-radius: 20px;
+  background-color: #fff;
+}
+
+.title {
+  text-align: left;
+  font-size: 14px;
+  font-family: Poppins;
+  color: #29a263;
+  font-weight: 500;
+  padding-left: 1em;
+  padding-right: 1em;
+  border-bottom: 2px solid #29a263;
+}
+
+.line {
+  border-top: 1px solid #737373;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-left: 2em;
+  margin-top: 2em;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inputGroup label {
+  font-size: 13px;
+  font-weight: 400;
+  font-family: Poppins;
+  color: #5e5e5e;
+}
+
+.inputGroup input {
+  height: 40px;
+  color: #000000;
+  padding: 9px;
+  width: 30em;
+  border: 1px solid #3e3e3e;
+  border-radius: 8px;
+  font-size: 13px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.inputGroup input:focus {
+  border-color: #4caf50;
+}
+
+.saveButton {
+  width: 15%;
+  height: 40px;
+  background-color: #29a263;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  align-self: flex-end;
+}
+
+.saveButton:hover {
+  background-color: #248a55;
+}
+
+.errMsg {
+  margin-top: -1em;
+  margin-left: 0.3em;
+  color: rgb(199, 67, 67);
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .settingsContainer {
+    max-width: 100%;
+    margin: 10px auto;
+    padding: 20px 1.5em 20px 20px;
+    border-radius: 20px;
+    background-color: #fff;
+  }
+
+  .settingsContainer {
+    padding: 15px;
+    width: auto;
+  }
+
+  .inputGroup input {
+    font-size: 13px;
+    width: auto;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-left: 0em;
+    margin-top: 1.7em;
+  }
+
+  .saveButton {
+    font-size: 13px;
+    width: 30%;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 16px;
+  }
+
+  .inputGroup input {
+    height: 36px;
+  }
+
+  .saveButton {
+    height: 36px;
+  }
+}

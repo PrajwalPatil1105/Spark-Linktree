@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "../Styles/Addlink.module.css";
 import { Copy, Store, Trash2 } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
-const LinkPopup = ({ isOpen, onClose, onAddLink }) => {
-  const [activeTab, setActiveTab] = useState("link");
+const LinkPopup = ({ isOpen, onClose, initialTab, setOnUpdate, OnUpdate }) => {
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [selectedPlatform, setSelectedPlatform] = useState(null);
   const [linkData, setLinkData] = useState({
     title: "",
@@ -16,9 +17,9 @@ const LinkPopup = ({ isOpen, onClose, onAddLink }) => {
   });
   const [toggleEnabled, setToggleEnabled] = useState(false);
   const [formValid, setFormValid] = useState(false);
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
   const popupRef = useRef();
 
-  // Platform options
   const socialPlatforms = [
     { id: "instagram", name: "Instagram", icon: "./Images/Insta.png" },
     { id: "facebook", name: "FaceBook", icon: "./Images/Facebook.png" },
@@ -26,13 +27,18 @@ const LinkPopup = ({ isOpen, onClose, onAddLink }) => {
     { id: "twitter", name: "X", icon: "./Images/X.png" },
   ];
 
+  useEffect(() => {
+    if (isOpen && initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [isOpen, initialTab]);
+
   const shopPlatforms = [
     { id: "amazon", name: "Amazon", icon: "./Images/Amazon.png" },
     { id: "flipkart", name: "Flipkart", icon: "/Images/Fkart.png" },
     { id: "Zomato", name: "Zomato", icon: "/Images/Zomato.png" },
   ];
 
-  // Reset form when popup opens
   useEffect(() => {
     if (isOpen) {
       setLinkData({ title: "", url: "" });
@@ -43,7 +49,6 @@ const LinkPopup = ({ isOpen, onClose, onAddLink }) => {
     }
   }, [isOpen]);
 
-  // Handle click outside to close
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -58,7 +63,6 @@ const LinkPopup = ({ isOpen, onClose, onAddLink }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen, onClose]);
 
-  // Reset state when switching tabs
   useEffect(() => {
     setSelectedPlatform(null);
     setLinkData({ title: "", url: "" });
@@ -67,19 +71,16 @@ const LinkPopup = ({ isOpen, onClose, onAddLink }) => {
     setFormValid(false);
   }, [activeTab]);
 
-  // Check form validity whenever inputs change
   useEffect(() => {
     validateFields(false);
   }, [linkData, selectedPlatform]);
 
-  // Watch for toggle changes
   useEffect(() => {
     if (toggleEnabled && formValid) {
       handleSaveLink();
     }
   }, [toggleEnabled]);
 
-  // Validate form fields
   const validateFields = (showErrors = true) => {
     const newErrors = { title: "", url: "", platform: "" };
     let isValid = true;
@@ -115,35 +116,56 @@ const LinkPopup = ({ isOpen, onClose, onAddLink }) => {
     return isValid;
   };
 
-  // Handle platform selection
   const handlePlatformSelect = (platform) => {
     setSelectedPlatform(platform);
     setErrors((prev) => ({ ...prev, platform: "" }));
   };
 
-  // Handle form submission
-  const handleSaveLink = () => {
+  const handleSaveLink = async () => {
+    const token = localStorage.getItem("token");
     if (formValid) {
-      onAddLink({
-        platform: selectedPlatform.id,
-        platformName: selectedPlatform.name,
-        platformIcon: selectedPlatform.icon,
-        title: linkData.title,
-        url: linkData.url,
-        enabled: true,
-        clicks: 0,
-        type: activeTab === "shop" ? "shop" : "link",
-      });
-      onClose();
+      try {
+        const linkPayload = {
+          url: linkData.url,
+          title: linkData.title,
+          type: activeTab === "shop" ? "shop" : "link",
+          enabled: true,
+          platform: selectedPlatform.id,
+          platformName: selectedPlatform.name,
+          platformIcon: selectedPlatform.icon,
+        };
+
+        const response = await fetch(`${BASE_URL}url/Addlink`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(linkPayload),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to add link");
+        }
+        const data = await response.json();
+        if (data?.code === "1") {
+          toast.success(data.message);
+          setOnUpdate(!OnUpdate);
+          setTimeout(() => {
+            onClose();
+          }, 2000);
+        }
+      } catch (error) {
+        console.error("Error adding link:", error);
+      }
     }
   };
 
-  // Handle toggle change
   const handleToggleChange = (e) => {
     const isChecked = e.target.checked;
 
     if (isChecked && !formValid) {
-      validateFields(true); // Show errors if trying to enable without valid form
+      validateFields(true);
       return;
     }
 
@@ -263,6 +285,18 @@ const LinkPopup = ({ isOpen, onClose, onAddLink }) => {
           </div>
         </div>
       </div>
+      <Toaster
+        toastOptions={{
+          style: {
+            color: "white",
+            backgroundColor: "#05A763",
+            fontFamily: "Manrope",
+            fontSize: "0.85em",
+            fontWeight: "400",
+            marginLeft: "3.5em",
+          },
+        }}
+      />
     </div>
   );
 };

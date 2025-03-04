@@ -1,52 +1,63 @@
 import React, { useEffect, useState } from "react";
 import styles from "../Styles/About.module.css";
 import { useNavigate } from "react-router";
+import { useLocation } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 function SignUp() {
   const navigate = useNavigate();
-  const [Username, setUsername] = useState("");
+  const location = useLocation();
+  const [username, setUsername] = useState("");
   const [UsernameErr, setUsernameErr] = useState("");
-  const [Category, setCategory] = useState("");
+  const [category, setCategory] = useState("");
   const [CatErr, setCatErr] = useState("");
+  const userId = location.state?.id;
   const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
   useEffect(() => {
-    console.log(Category);
-  }, [Category]);
+    if (!userId) {
+      toast.error("Please sign up first");
+      setTimeout(() => {
+        navigate("/signup");
+      }, 2000);
+    }
+  }, [userId, navigate]);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    Username.length === 0
+    username.length === 0
       ? setUsernameErr("*Please add username")
       : setUsernameErr("");
-    Category.length === 0
+    category.length === 0
       ? setCatErr("*Please select Category")
       : setCatErr("");
 
-    if (About.length >= 0) {
+    if (username.length >= 1 && category.length >= 1) {
       try {
-        const responce = await fetch(`${BASE_URL}auth/signup`, {
-          method: "POST",
-          headers: { "Content-type": "application/JSON" },
-          body: JSON.stringify({ Username, email, mobile, password }),
-        });
-        const data = await responce.json();
+        const response = await fetch(
+          `${BASE_URL}auth/update-profile/${userId}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, category }),
+          }
+        );
+        const data = await response.json();
         if (data?.code === "1") {
-          toast?.success(data?.message);
+          toast.success(data?.message);
           setTimeout(() => {
-            Login();
+            navigate("/login");
           }, 2000);
         } else {
           toast.error(data?.message);
         }
       } catch (error) {
-        toast.error("Sign Up failed. Please try again.");
+        toast.error("Failed to update profile. Please try again.");
       }
     }
   }
+
+  console.log(userId);
 
   return (
     <>
@@ -64,7 +75,7 @@ function SignUp() {
                   className={styles.Nameinput}
                   type="text"
                   name="name"
-                  value={Username}
+                  value={username}
                   placeholder="Tell us your username"
                   onChange={(e) => setUsername(e.target.value)}
                 />
@@ -79,7 +90,7 @@ function SignUp() {
                   <button
                     type="button"
                     className={`${styles.categoryBtn} ${
-                      Category === "Business" ? styles.selected : ""
+                      category === "Business" ? styles.selected : ""
                     }`}
                     onClick={() => setCategory("Business")}
                   >
@@ -88,7 +99,7 @@ function SignUp() {
                   <button
                     type="button"
                     className={`${styles.categoryBtn} ${
-                      Category === "Creative" ? styles.selected : ""
+                      category === "Creative" ? styles.selected : ""
                     }`}
                     onClick={() => setCategory("Creative")}
                   >
@@ -97,7 +108,7 @@ function SignUp() {
                   <button
                     type="button"
                     className={`${styles.categoryBtn} ${
-                      Category === "Education" ? styles.selected : ""
+                      category === "Education" ? styles.selected : ""
                     }`}
                     onClick={() => setCategory("Education")}
                   >
@@ -106,7 +117,7 @@ function SignUp() {
                   <button
                     type="button"
                     className={`${styles.categoryBtn} ${
-                      Category === "Entertainment" ? styles.selected : ""
+                      category === "Entertainment" ? styles.selected : ""
                     }`}
                     onClick={() => setCategory("Entertainment")}
                   >
@@ -115,7 +126,7 @@ function SignUp() {
                   <button
                     type="button"
                     className={`${styles.categoryBtn} ${
-                      Category === "Fashion & Beauty" ? styles.selected : ""
+                      category === "Fashion & Beauty" ? styles.selected : ""
                     }`}
                     onClick={() => setCategory("Fashion & Beauty")}
                   >
@@ -124,7 +135,7 @@ function SignUp() {
                   <button
                     type="button"
                     className={`${styles.categoryBtn} ${
-                      Category === "Food & Beverage" ? styles.selected : ""
+                      category === "Food & Beverage" ? styles.selected : ""
                     }`}
                     onClick={() => setCategory("Food & Beverage")}
                   >
@@ -133,7 +144,7 @@ function SignUp() {
                   <button
                     type="button"
                     className={`${styles.categoryBtn} ${
-                      Category === "Government & Politics"
+                      category === "Government & Politics"
                         ? styles.selected
                         : ""
                     }`}
@@ -144,7 +155,7 @@ function SignUp() {
                   <button
                     type="button"
                     className={`${styles.categoryBtn} ${
-                      Category === "Health & Wellness" ? styles.selected : ""
+                      category === "Health & Wellness" ? styles.selected : ""
                     }`}
                     onClick={() => setCategory("Health & Wellness")}
                   >
@@ -153,7 +164,7 @@ function SignUp() {
                   <button
                     type="button"
                     className={`${styles.categoryBtn} ${
-                      Category === "Non-Profit" ? styles.selected : ""
+                      category === "Non-Profit" ? styles.selected : ""
                     }`}
                     onClick={() => setCategory("Non-Profit")}
                   >
@@ -162,7 +173,7 @@ function SignUp() {
                   <button
                     type="button"
                     className={`${styles.categoryBtn} ${
-                      Category === "Other" ? styles.selected : ""
+                      category === "Other" ? styles.selected : ""
                     }`}
                     onClick={() => setCategory("Other")}
                   >
@@ -171,7 +182,7 @@ function SignUp() {
                   <button
                     type="button"
                     className={`${styles.categoryBtn} ${
-                      Category === "Tech" ? styles.selected : ""
+                      category === "Tech" ? styles.selected : ""
                     }`}
                     onClick={() => setCategory("Tech")}
                   >
@@ -180,7 +191,7 @@ function SignUp() {
                   <button
                     type="button"
                     className={`${styles.categoryBtn} ${
-                      Category === "Travel & Tourism" ? styles.selected : ""
+                      category === "Travel & Tourism" ? styles.selected : ""
                     }`}
                     onClick={() => setCategory("Travel & Tourism")}
                   >
@@ -188,7 +199,7 @@ function SignUp() {
                   </button>
                 </div>
                 <span className={styles.CatMsg}>{CatErr}</span>
-                <button className={styles.SigninBtn}>Log in</button>
+                <button className={styles.SigninBtn}>Continue</button>
               </div>
             </form>
           </div>

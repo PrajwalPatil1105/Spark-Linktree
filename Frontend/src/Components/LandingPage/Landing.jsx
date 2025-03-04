@@ -1,14 +1,16 @@
 import React from "react";
 import styles from "../Styles/Landing.module.css";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 const Landing = () => {
+  const navigate = useNavigate();
   const integrations = [
     {
       title: "Audiomack",
       description: "Add an Audiomack player to your Linktree",
-      imgSrc: "/images/audiomack-icon.png", // Replace with actual image paths
+      imgSrc: "/images/audiomack-icon.png",
     },
     {
       title: "Bandsintown",
@@ -34,7 +36,12 @@ const Landing = () => {
           />
         </div>
         <button className={styles.Admin}>Admin</button>
-        <button className={styles.signUpFree}>Sign up free</button>
+        <button
+          className={styles.signUpFree}
+          onClick={() => navigate("/signup")}
+        >
+          Sign up free
+        </button>
         <FontAwesomeIcon className={styles.bars} icon={faBars} />
       </nav>
 
@@ -46,7 +53,12 @@ const Landing = () => {
             Help your followers discover everything you're sharing all over the
             internet, in one simple place. They'll thank you for it.
           </p>
-          <button className={styles.getSparkBtn}>Get your free Spark</button>
+          <button
+            className={styles.getSparkBtn}
+            onClick={() => navigate("/signup")}
+          >
+            Get your free Spark
+          </button>
         </div>
         <div className={styles.heroRight}>
           <img
@@ -202,8 +214,18 @@ const Landing = () => {
         <div className={styles.footercard}>
           <div className={styles.footerTop}>
             <div>
-              <button className={styles.logIn}>Log in</button>
-              <button className={styles.signUpFree}>Sign up free</button>
+              <button
+                className={styles.logIn}
+                onClick={() => navigate("/login")}
+              >
+                Log in
+              </button>
+              <button
+                className={styles.signUpFree}
+                onClick={() => navigate("/signup")}
+              >
+                Sign up free
+              </button>
             </div>
             <div className={styles.footerLinks}>
               <div className={styles.footerColumn}>

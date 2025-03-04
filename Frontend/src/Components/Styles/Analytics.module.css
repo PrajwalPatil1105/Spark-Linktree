@@ -1,0 +1,293 @@
+.analyticsContainer {
+  padding: 2rem;
+  margin-top: 1em;
+  background: transparent;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.header h2 {
+  font-size: 1.1em;
+  font-weight: 500;
+}
+
+.datediv {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: white;
+}
+
+.dateSelect {
+  padding: 0.3rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: white;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.statCard1,
+.statCard2,
+.statCard3 {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+
+.statCard1 {
+  background-color: #22d679;
+}
+.statCard2 {
+  background-color: #dcffeb;
+}
+.statCard3 {
+  background-color: #dcffeb;
+}
+
+.statCard1 h3 {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+.statCard1 p {
+  color: white;
+  font-size: 1.7em;
+  margin-bottom: 0.5rem;
+}
+
+.statCard2 h3,
+.statCard3 h3 {
+  color: black;
+  font-size: 0.9rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+
+.statCard2 p,
+.statCard3 p {
+  color: black;
+  font-size: 1.7em;
+  margin-bottom: 0.5rem;
+}
+
+.statNumber {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #28a263;
+}
+
+.chartSection {
+  background: white;
+  padding: 1.5rem;
+  font-size: 0.7em;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.analyticsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.analyticsGrid h3 {
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+
+.barChart {
+  height: 300px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-top: 2rem;
+}
+
+.barGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40px;
+}
+
+.bar {
+  width: 100%;
+  background: #28a263;
+  border-radius: 4px;
+  transition: height 0.3s ease;
+}
+
+.barLabel {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.pieChart {
+  padding: 1rem;
+}
+
+.pieStats {
+  display: grid;
+  gap: 0.5rem;
+  justify-content: end;
+}
+
+.pieStats span {
+  font-size: 0.8em;
+}
+
+.pieStat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dotIndicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.chartContainer {
+  display: flex;
+  align-items: flex-end;
+  margin-top: 2em;
+}
+
+.yAxis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 200px;
+  margin-right: 10px;
+  font-size: 12px;
+  color: #555555;
+  text-align: right;
+}
+
+.barChart {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 200px;
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+.barGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 14%;
+}
+
+.bar {
+  width: 100%;
+  border-radius: 8px;
+  background-color: #29a263;
+  transition: background-color 0.3s ease;
+}
+
+.bar:hover {
+  opacity: 0.8;
+}
+
+.barLabel {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #555555;
+  text-align: center;
+}
+.card {
+  background-color: #f9fafb;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.pieChart {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pieStats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-left: 20px;
+}
+
+.pieStat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dotIndicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.pieStat span:nth-child(2) {
+  flex-grow: 1;
+  color: #4a5568;
+}
+
+.pieStat span:nth-child(3) {
+  font-weight: bold;
+  color: #2d3748;
+}
+@media (max-width: 768px) {
+  .analyticsContainer {
+    padding: 0rem;
+  }
+
+  .statsGrid,
+  .analyticsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .barGroup {
+    width: 30px;
+  }
+  .barLabel {
+    margin-top: 8px;
+    font-size: 9px;
+    color: #555555;
+    text-align: center;
+  }
+
+  .chartSection {
+    background: white;
+    padding: 1.5rem 1rem 1.5rem 0rem;
+    font-size: 0.7em;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+  }
+}

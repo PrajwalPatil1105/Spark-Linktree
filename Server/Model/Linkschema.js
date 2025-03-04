@@ -6,48 +6,36 @@ const LinkSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  originalLink: {
+  url: {
     type: String,
     required: true,
   },
-  hashedLink: {
+  title: {
     type: String,
-    unique: true,
+    required: true,
   },
-  remark: {
+  type: {
     type: String,
+    required: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  enabled: {
+    type: Boolean,
+    default: true,
   },
-  expiryDate: {
-    type: Date,
+  platformName: {
+    type: String,
+    trim: true,
+  },
+  platformIcon: {
+    type: String,
+    trim: true,
   },
   totalClicks: {
     type: Number,
     default: 0,
   },
-  mobileClicks: {
-    type: Number,
-    default: 0,
-  },
-  desktopClicks: {
-    type: Number,
-    default: 0,
-  },
-  tabletClicks: {
-    type: Number,
-    default: 0,
-  },
   clickDetails: [
     {
-      ipAddress: {
-        type: String,
-      },
-      browser: {
-        type: String,
-      },
       os: {
         type: String,
       },
@@ -57,6 +45,10 @@ const LinkSchema = new mongoose.Schema({
       },
     },
   ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const Link = new mongoose.model("Link", LinkSchema);
