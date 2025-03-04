@@ -342,7 +342,16 @@ const ShareLinks = () => {
       </div>
       <div className={styles.bottomContent}>
         <div className={styles.connectButton}>
-          <button>Get Connected</button>
+          <button
+            onClick={() => {
+              const url = `https://spark-linktree-nine.vercel.app/`;
+              navigator.clipboard.writeText(url).then(() => {
+                window.location.href = url;
+              });
+            }}
+          >
+            Get Connected
+          </button>
         </div>
         <div className={styles.sparkLogo}>
           <img src="../Images/SignIn Logo.png" alt="SPARK" />

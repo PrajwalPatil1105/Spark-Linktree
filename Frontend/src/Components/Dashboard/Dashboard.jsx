@@ -319,7 +319,15 @@ const Dashboard = () => {
             className={styles.userProfile}
             style={{ backgroundColor: UserInfo?.bannerColor }}
           >
-            <button className={styles.share}>
+            <button
+              className={styles.share}
+              onClick={() => {
+                const url = `https://spark-linktree-nine.vercel.app/share/${UserInfo._id}`;
+                navigator.clipboard.writeText(url).then(() => {
+                  toast.success("Link copied to clipboard!");
+                });
+              }}
+            >
               <Share size={18} />
             </button>
             <div className={styles.profileImage}>
@@ -395,7 +403,16 @@ const Dashboard = () => {
       </div>
       <div className={styles.bottomContent}>
         <div className={styles.connectButton}>
-          <button>Get Connected</button>
+          <button
+            onClick={() => {
+              const url = `https://spark-linktree-nine.vercel.app/`;
+              navigator.clipboard.writeText(url).then(() => {
+                window.location.href = url;
+              });
+            }}
+          >
+            Get Connected
+          </button>
         </div>
         <div className={styles.sparkLogo}>
           <img src="./Images/SignIn Logo.png" alt="SPARK" />
